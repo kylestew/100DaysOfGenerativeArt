@@ -1,0 +1,8 @@
+#!/bin/sh
+
+cd $1
+
+ffmpeg -framerate 30 -f image2 -i output/frame%8d.png -framerate 30 -vcodec libx264 -pix_fmt yuv420p output.mp4
+open output.mp4
+
+rm -rf output
