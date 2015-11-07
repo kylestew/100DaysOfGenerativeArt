@@ -11,8 +11,16 @@ Follow Along
 Instagram: [kylestew](https://instagram.com/kylestew/)  
 Twitter: [@kyleRstewart](https://twitter.com/kylerstewart)
 Tumblr: [kyleRstewart](http://kylerstewart.tumblr.com/)
+Vine: ???
 
-#processing #generative #generativeart #code
+#100DaysOfGenerativeArt
+#processing
+#generative
+#generativeart
+#code
+#gif
+#gifart
+#animation
 
 Brainstorming
 -------------
@@ -20,13 +28,6 @@ Brainstorming
 + Flow maps
 
 
-
-- Can meta balls output to SVG?
-    - http://paperjs.org/examples/meta-balls/
-- http://paperjs.org/examples/division-raster/
-- Shape/color sample an image
-    - http://paperjs.org/examples/q-bertify/
-- Audio reactive vectors
 
 - Vector explorations
     - http://benguerrette.com/lab/gridglitcher/
