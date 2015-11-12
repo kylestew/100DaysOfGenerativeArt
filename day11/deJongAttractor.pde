@@ -7,10 +7,10 @@ class deJongAttractor {
   void setup(int dimension, int samples, float a, float b, float c, float d) {
     dim = dimension;
     this.samples = samples;
-    this.a = a;
-    this.b = b;
-    this.c = c;
-    this.d = d;
+    this.a = a/100.0;
+    this.b = b/100.0;
+    this.c = c/100.0;
+    this.d = d/100.0;
   }
   
   PImage plotImage() {
@@ -32,7 +32,7 @@ class deJongAttractor {
     for (int i = 0; i < samples; ++i) {
       x0 = 0;
       y0 = 0;
-      for (int j = 0; j < 100000; ++j) {
+      for (int j = 0; j < 500000; ++j) {
         // deJong function with screen scaling
         x1 = ((sin(a*y0) - cos(b*x0)) * dim*0.24) + dim/2.0;
         y1 = ((sin(c*x0) - cos(d*y0)) * dim*0.24) + dim/2.0;

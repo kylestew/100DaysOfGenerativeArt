@@ -19,7 +19,7 @@ void setup() {
   //frameRate(fRate);
   
   deJong = new deJongAttractor();
-  deJong.setup(width, 100, 1.4, -2.3, 2.4, -2.1);
+  deJong.setup(width, 64, -2, -2, -1.2, -2);
 }
 
 void draw() {

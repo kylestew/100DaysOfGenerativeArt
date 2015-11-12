@@ -1,6 +1,6 @@
-/*== DAY 09 == [MON NOV 9 2015] == */
+/*== DAY 10 == [MON NOV 9 2015] == */
 /*
- * "Strange Attractions - I"
+ * "Strange Attractions - II"
  * Actually a DeJong Attractor, not sure if thats a different class
  * http://paulbourke.net/fractals/peterdejong/
  * http://www.openprocessing.org/sketch/2097
@@ -13,13 +13,15 @@
 deJongAttractor deJong;
 
 void setup() {
-  size(1024, 1024);
+//  size(1200, 1200);
+  size(320, 320);
   smooth();
 
   //frameRate(fRate);
   
   deJong = new deJongAttractor();
-  deJong.setup(width, 100, 1.4, -2.3, 2.4, -2.1);
+  //deJong.setup(width, 12, 1.2, -1.4, 1.4, -1.2);
+  deJong.setup(width, 2, -2, -2, -1.2, 2.1);
 }
 
 void draw() {
@@ -31,6 +33,6 @@ void draw() {
   print("complete");
   noLoop();
    //<>//
-  saveFrame("output/frame########.png");
+  //saveFrame("output/frame########.png");
   //if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
 }
