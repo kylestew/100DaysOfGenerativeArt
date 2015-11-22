@@ -5,24 +5,23 @@
  * Original idea: http://www.openprocessing.org/sketch/162660
  */
 
-int fCount = 80;
+int fCount = 340;
 int fRate = 30; // 4 sec
 
-float num = -64;
+float num = 0;
 
 void setup() {
   size(640, 640, P3D);
   smooth(8);
+  frameRate(30);
   background(0);
   noStroke();
 } //<>//
 
 void draw() {
+  if (frameCount > fCount)
+    return;
   println("frame: " + frameCount);
-  //if (frameCount > fCount/2)
-    //return;
-  //if (!running)
-   //return;
    
   // grow color from blue to red
   fill(30+abs(num)/1, 19, 230-abs(num)/1, 88);
@@ -38,11 +37,11 @@ void draw() {
     circleAtPoint(-x, -y, 1 + abs(num)/36);
     circleAtPoint(-y, -x, 1 + abs(num)/36);
   }
-  num += 0.65;
+  num += 0.9;
 
 
   //// video
-  saveFrame("output/frame########.png");
+  //saveFrame("output/frame########.png");
   //// gif
   //if (frameCount % 1 == 0 && frameCount < 500) saveFrame("output/frame####.gif");
 }
