@@ -65,7 +65,7 @@ void draw() {
 
 
   //// video
-  //if (frameCount >= fStart) saveFrame("output/frame########.png");
+  if (frameCount >= fStart) saveFrame("output/frame########.png");
   // gif
-  if (frameCount >= fStart && frameCount % fDiv == 0 && frameCount < 500) saveFrame("output/frame####.gif");
+  //if (frameCount >= fStart && frameCount % fDiv == 0 && frameCount < 500) saveFrame("output/frame####.gif");
 }
