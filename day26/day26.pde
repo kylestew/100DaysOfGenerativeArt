@@ -5,7 +5,7 @@
  */
 
 int fStart = 0;
-int fCount = 50*4+4;
+int fCount = 50*4+3;
 int fDiv = 1;
 
 void setup() {
