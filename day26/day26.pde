@@ -1,7 +1,7 @@
 /*== DAY 26 == [FRIE NOV 27 2015] == */ //<>//
 /*
- * "..."
- * 
+ * "Flexy"
+ * Sine wave by points with well defined boundaries
  */
 
 int fStart = 0;

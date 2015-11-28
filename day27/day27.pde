@@ -1,11 +1,12 @@
 /*== DAY 27 == [SAT NOV 28 2015] == */ //<>//
 /*
- * "Trust Your Instincts"
- * Unless your instincts are terrible
+ * "Powering Up"
+ * ...
  */
 
 int fStart = 0;
-int fCount = 44*4+4;
+int fCount = 46;
+//int fCount = 44*4+4;
 int fDiv = 1;
 
 void setup() {
@@ -51,7 +52,7 @@ void draw() {
   }
 
   //// video
-  if (frameCount >= fStart) saveFrame("output/frame########.png");
+  //if (frameCount >= fStart) saveFrame("output/frame########.png");
   // gif
-  //if (frameCount >= fStart && frameCount % fDiv == 0 && frameCount < 500) saveFrame("output/frame####.gif");
+  saveFrame("output/frame####.gif");
 }
