@@ -1,11 +1,11 @@
 /*== DAY 31 == [THR DEC 3 2015] == */ //<>//
 /*
- * ""
- * ...
+ * "Extrusions"
+ * Inspired by a gif loop coder post
  */
 
-int fCount = 160;
-int fDiv = 4;
+int fCount = 60;
+int fDiv = 2;
 
 void setup() {
   size(640, 640);
@@ -31,36 +31,36 @@ void setup() {
 //} 
 
 void draw() {
-  //if (frameCount > fCount) {
-    //frameCount = 0; 
-  //noLoop();
-  //}
-  //println(frameCount);
+  if (frameCount > fCount) {
+    frameCount = 0; 
+  noLoop();
+  }
+  println(frameCount);
 
   background(255);
   
-  float cell = width/8.0;
-  for (int col = 0; col < 8; col++) {
-    for (int row = 0; row < 8; row++) {
-      float x = row*cell + cell/2.0;
-      float y = col*cell + cell/2.0;
+  float count = 8;
+  float inset = 0;
+  float cell = (width-inset)/count;
+  for (int col = 0; col < count; col++) {
+    for (int row = 0; row < count; row++) {
+      float x = inset/2.0 + row*cell + cell/2.0;
+      float y = inset/2.0 + col*cell + cell/2.0;
       
-      drawLiftedCircle(x, y, width*0.5, 12.0);
+      //float dist = sin(radians(step + frameCount*4.0)) * 32.0 + 24.0;
+      
+      float dist = dist(width/2.0, height/2.0, x, y);
+      dist = sin(radians(dist-frameCount*6.0)) * 18.0 + 16.0;
+
+      drawLiftedCircle(x, y, cell*0.6, dist);
     }
   }
-  
-  //drawLiftedCircle(width/2.0 - 100, height/2.0, 80.0, 6.0);
-  
-  float dist = sin(radians(frameCount*4.0)) * 64.0;
-  
-  drawLiftedCircle(width/2.0, height/2.0, 80.0, dist);
-  //drawLiftedCircle(width/2.0 + 100, height/2.0, 80.0, 24.0);
   
 
   //// video
   //if (frameCount >= 0) saveFrame("output/frame########.png");
   // gif
-  //if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
+  if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
 }
 
 void drawLiftedCircle(float x, float y, float radius, float height) {
