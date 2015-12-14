@@ -4,7 +4,7 @@
  * Color wheel with mixing
  */
 
-int fCount = 120-2;
+int fCount = 120-1;
 int fDiv = 2;
 
 void setup() {
@@ -51,7 +51,7 @@ void draw() {
   
 
   //// video
-  if (frameCount >= 0 && fPreLoop == 0) saveFrame("output/frame########.png");
+  if (frameCount >= 0) saveFrame("output/frame########.png");
   //gif
   //if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
 }
