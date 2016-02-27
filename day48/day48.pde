@@ -5,7 +5,7 @@
  */
  
 int fCount = 180;
-int fDiv = 2;
+int fDiv = 3;
 
 void setup() {
   size(640, 640, P2D);
@@ -72,7 +72,7 @@ void draw() {
   tick = frameCount * speed;
 
   //// video
-  if (frameCount >= 0) saveFrame("output/frame########.png");
+  //if (frameCount >= 0) saveFrame("output/frame########.png");
   //gif
-  //if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
+  if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
 }

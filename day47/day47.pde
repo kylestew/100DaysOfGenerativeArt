@@ -5,6 +5,7 @@
  */
 
 int fCount = 15*30;
+int fDiv = 4;
 
 void setup() {
   size(640, 640);  
@@ -19,7 +20,7 @@ void draw() {
     frameCount = 0;
     noLoop();
   }
-  //println(frameCount);
+  println(frameCount);
   
   background(360);
   
@@ -42,9 +43,9 @@ void draw() {
 
 
   // video
-  saveFrame("output/frame########.png");
+  //saveFrame("output/frame########.png");
   // gif
-  //if (frameCount % 1 == 0 && frameCount < 500) saveFrame("output/frame####.gif");
+  if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
 }
 
 void blobCircle(float rad) {

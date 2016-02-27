@@ -5,6 +5,7 @@
  */
 
 int fCount = 10*30;
+int fDiv = 12;
 
 int count = 20;
 int stride = 40;
@@ -73,7 +74,7 @@ void draw() {
   }
 
   //// video
-  saveFrame("output/frame########.png");
+  //saveFrame("output/frame########.png");
   // gif
-  //if (frameCount % 1 == 0 && frameCount < 500) saveFrame("output/frame####.gif");
+  if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
 }
