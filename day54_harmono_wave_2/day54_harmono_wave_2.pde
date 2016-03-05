@@ -1,7 +1,7 @@
 /*== DAY 54 == [TUE FEB 30 2016] == */
 /*
  * "Harmonograph - IV"
- * High resolution renderings - ???
+ * One more animation
  */
 
 int fCount = 360;

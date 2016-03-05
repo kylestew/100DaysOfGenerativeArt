@@ -9,3 +9,5 @@ application.macosx
 
 output/
 output*
+build/
+build*
