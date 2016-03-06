@@ -1,7 +1,7 @@
 /*== DAY 59 == [MON MAR 7 2016] == */
 /*
- * "Superformula 2"
- * Inspired by example on P5.JS class on Kadenze
+ * "Souperformula"
+ * Andy Warhol meets Gielis
  */
 int fCount = 12*30;
 int fDiv = 3;
@@ -74,33 +74,6 @@ void drawSuperformula(float m, float n1, float n2, float n3, float scale) {
   }
   curveVertex(points[points.length-1].x * scale, points[points.length-1].y * scale);
   endShape(CLOSE);
-}
-
-void drawShape(float x, float y) {
-  // TODO: iterates multiple times per shape
-  //pushMatrix();
-  translate(x, y);
-
-  // float newScaler = scaler;
-  //for (int s = 16; s > 0; --s) {
-  //  beginShape();
-
-  //  float mm = m + s;
-  //  float nn1 = n1 + s;
-  //  float nn2 = n2 + s;
-  //  float nn3 = n3 + s;
-  //  newScaler *= 0.98;
-  //  float sScaler = newScaler;
-
-  //  PVector[] points = superformula(mm, nn1, nn2, nn3);
-  //  curveVertex(points[points.length-1].x * sScaler, points[points.length-1].y * sScaler);
-  //  for (int i = 0; i < points.length; i++) {
-  //   curveVertex(points[i].x * sScaler, points[i].y * sScaler);
-  //  }
-  //  curveVertex(points[0].x * sScaler, points[0].y * sScaler);
-
-  //  endShape();
-  //}
 }
 
 PVector[] superformula(float m, float n1, float n2, float n3) {

@@ -1,16 +1,16 @@
-/*== DAY 58 == [SUN MAR 5 2016] == */
+/*== DAY 58 == [SUN MAR 6 2016] == */
 /*
  * "Superformula"
- * Andy Warhol meets Gielis
+ * Inspired by example on P5.JS class on Kadenze
  */
 int fCount = 12*30;
-int fDiv = 3;
+int fDiv = 8;
 
 float m = 0;
 
 void setup() {
   size(640, 640);
-  noStroke();
+  noFill();
   frameRate(30);
 }
 
@@ -23,41 +23,16 @@ void draw() {
 
   background(0);
 
-  float scale = width/8.0;
+  float scale = width/4.0+40;
 
-  float rad = map(frameCount, 0, fCount, -TWO_PI/2.0, TWO_PI/2.0);
-  m = 6 + 6*sin(rad);
+  translate(width/2, height/2);
+  stroke(255, 243, 220);
+  strokeWeight(1);
 
-  // draw backdrops
-  noStroke();
-  fill(31, 42, 124);
-  rect(0, 0, width/2, height/2);
 
-  fill(238, 104, 31);
-  rect(width/2, 0, width/2, height/2);
-
-  fill(119, 189, 54);
-  rect(width/2, height/2, width/2, height/2);
-
-  fill(246, 235, 29);
-  rect(0, height/2, width/2, height/2);
-
-  // draw shapes
-  translate(width/4, height/4);
-  fill(229, 0, 31);
   drawSuperformula(m, 3, 14, 2, scale);
+  m += 0.08;
 
-  translate(width/2, 0);
-  fill(255, 243, 161);
-  drawSuperformula(m, 1, 1, 8, scale);
-
-  translate(0, height/2);
-  fill(229, 0, 117);
-  drawSuperformula(m, 15, 20, 3, scale);
-
-  translate(-width/2, 0);
-  fill(32, 41, 134);
-  drawSuperformula(m, 1, 4, 8, scale/3.0);
 
   // video
   // saveFrame("output/frame########.png");
@@ -66,41 +41,31 @@ void draw() {
 }
 
 void drawSuperformula(float m, float n1, float n2, float n3, float scale) {
-  beginShape();
-  PVector[] points = superformula(m, n1, n2, n3);
-  curveVertex(points[0].x * scale, points[0].y * scale);
-  for (int i = 0; i < points.length; i++) {
-    curveVertex(points[i].x * scale, points[i].y * scale);
+  float newScaler = scale;
+  for (int s = 16; s > 0; --s) {
+    beginShape();
+
+    // float mm = m + s + 4*noise(s);
+    // float nn1 = n1 + s;
+    // float nn2 = n2 + s;
+    // float nn3 = n3 + s;
+
+    float mm = m;
+    float nn1 = n1 + 3*noise(s + frameCount/30.0);
+    float nn2 = n2 + 3*noise(s + frameCount/30.0);
+    float nn3 = n3 + 3*noise(s + frameCount/30.0);
+    newScaler *= 0.94;
+    float sScaler = newScaler;
+
+    PVector[] points = superformula(mm, nn1, nn2, nn3);
+    curveVertex(points[points.length-1].x * sScaler, points[points.length-1].y * sScaler);
+    for (int i = 0; i < points.length; i++) {
+      curveVertex(points[i].x * sScaler, points[i].y * sScaler);
+    }
+    curveVertex(points[0].x * sScaler, points[0].y * sScaler);
+
+    endShape(CLOSE);
   }
-  curveVertex(points[points.length-1].x * scale, points[points.length-1].y * scale);
-  endShape(CLOSE);
-}
-
-void drawShape(float x, float y) {
-  // TODO: iterates multiple times per shape
-  //pushMatrix();
-  translate(x, y);
-
-  // float newScaler = scaler;
-  //for (int s = 16; s > 0; --s) {
-  //  beginShape();
-
-  //  float mm = m + s;
-  //  float nn1 = n1 + s;
-  //  float nn2 = n2 + s;
-  //  float nn3 = n3 + s;
-  //  newScaler *= 0.98;
-  //  float sScaler = newScaler;
-
-  //  PVector[] points = superformula(mm, nn1, nn2, nn3);
-  //  curveVertex(points[points.length-1].x * sScaler, points[points.length-1].y * sScaler);
-  //  for (int i = 0; i < points.length; i++) {
-  //   curveVertex(points[i].x * sScaler, points[i].y * sScaler);
-  //  }
-  //  curveVertex(points[0].x * sScaler, points[0].y * sScaler);
-
-  //  endShape();
-  //}
 }
 
 PVector[] superformula(float m, float n1, float n2, float n3) {
