@@ -24,6 +24,18 @@ Vine: ???
 
 Brainstorming
 -------------
+
++ Superformula
++ Modulated Harmonigraph
++ 3d lissajous
++ bulk filtering with PS
++ Slit video
++ Circle packing
+
+
+
+
+
 + Generational terrain
 + Flow maps
 
