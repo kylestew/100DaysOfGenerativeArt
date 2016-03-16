@@ -2,7 +2,7 @@
 
 cd $1
 
-ffmpeg -framerate 30 -f image2 -i output/frame%8d.png -framerate 30 -vcodec libx264 -pix_fmt yuv420p output.mp4
+ffmpeg -framerate $2 -f image2 -i output/frame%8d.png -framerate $2 -b 1024k -vcodec libx264 -pix_fmt yuv420p output.mp4
 open output.mp4
 
-rm -rf output
+#rm -rf output
