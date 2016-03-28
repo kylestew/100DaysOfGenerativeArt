@@ -60,7 +60,7 @@ void draw() {
   //// video
   //if (frameCount >= 0) saveFrame("output/frame########.png");
   // gif
-  if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
+  //if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
 }
 
 void drawLiftedCircle(float x, float y, float radius, float height) {
