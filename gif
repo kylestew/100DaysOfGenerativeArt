@@ -2,10 +2,10 @@
 
 cd $1
 
-#gifsicle --delay=$2 --optimize=3 --loop output/*.gif > output.gif
+#gifsicle --delay=$2 --colors=256 --optimize=2 --loop output/*.gif > output.gif
 
-gifsicle --delay=$2 --colors=256 --optimize=2 --loop output/*.gif > output.gif
+#gifsicle --delay=$2 --colors=64 --optimize=3 --loop output/*.gif > output.gif
 
-#gifsicle --delay=$2 --colors=32 --optimize=3 --loop output/*.gif > output.gif
+gifsicle --delay=$2 --colors=32 --optimize=3 --loop output/*.gif > output.gif
 
 # rm -rf output

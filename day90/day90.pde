@@ -1,19 +1,15 @@
-/*== DAY 90 == [FRI APR 8 2016] == */
+/*== DAY 91 == [SAT APR 9 2016] == */
 /*
- * "Happy Spinny Things"
+ * "Converge to Nothing"
  * On a minimal kick, inspired by FLRN GIF (http://gif.flrn.nl).
  */
-int fCount = 3*30+8;
-int fDiv = 1;
+int fCount = 5*30;
+int fDiv = 2;
 
-color backColor = #222222;
-color foreColor = #eeeeee;
-float rad = 48.0;
-float space = 12.0;
-float thick = 6.0;
-float count = 7;
-
-PImage back;
+PImage back, back2;
+color backColor = #eeeeee;
+color foreColor = #000000;
+float rad;
 
 void setup() {
   size(640, 640);
@@ -21,54 +17,62 @@ void setup() {
   frameRate(30);
   
   back = loadImage("back.png");
-
+  back2 = loadImage("back2.png");
   noStroke();
+  
+  rad = width*0.6;
 }
+  float r = 0;
+  
 
 void draw() {
   if (frameCount > fCount) {
     frameCount = 0;
+    r = 0;
     noLoop();
     return;
   }
-  //println(frameCount);
+  println(frameCount);
   
   background(backColor);
   pushMatrix();
 
   translate(width/2, height/2);
-  float offset = space + rad;
-  translate(-offset*(int)(count / 2), -offset*(int)(count / 2));
+
+  // backdrop circle
+  noStroke();
+  fill(foreColor);
+  ellipse(0, 0, rad, rad);
   
-  float swing = map(frameCount, 0, fCount, 0, TWO_PI);
   
-  for (int i = 0; i < count; i++) {
-    pushMatrix();
-    float off1 = map(i, 0, count, 0, PI/2);
-    for (int j = 0; j < count; j++) {
-      float off2 = map(j, 0, count, 0, PI/4.0);
-      
-      fill(foreColor);
-      ellipse(0, 0, rad, rad);
-      
-      fill(backColor);
-     arc(0, 0, rad-thick, rad-thick, 0+swing+off2+off1, PI+swing+off2+off1);
+  // inner ring cutouts
+  
+  rotate(map(frameCount, 0, fCount, 0, TWO_PI));
+  for (int i = 0; i < 4; i++) {
+    rotate(TWO_PI/4.0);
     
-      translate(offset, 0);
-    }
-    popMatrix();
-    translate(0, offset);
+    //float r = map(frameCount, 0, fCount-30, 0, rad);
+    r = lerp(r, rad+rad*0.1, 0.005);
+    
+    
+    stroke(backColor);
+    noFill();
+    float weight = map(frameCount, 0, fCount, 0, 36);
+    strokeWeight(weight);
+    ellipse(rad/2-r/2, 0, r+weight+0.5, r+weight+0.5);
   }
 
 
+  // give it some texture
   popMatrix();
-  blendMode(SCREEN);
   blendMode(LIGHTEST);
   image(back, 0, 0);
+  blendMode(MULTIPLY);
+  image(back2, 0, 0);
   
 
   // video
   //saveFrame("output/frame########.png");
   // gif
-  //if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
+  if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
 }

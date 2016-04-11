@@ -1,6 +1,6 @@
-/*== DAY 91 == [SAT APR 9 2016] == */
+/*== DAY 92 == [SUN APR 10 2016] == */
 /*
- * "???"
+ * "This is not Real"
  * On a minimal kick, inspired by FLRN GIF (http://gif.flrn.nl).
  */
 int fCount = 3*30;
@@ -9,10 +9,8 @@ int fDiv = 1;
 PImage back, back2;
 color backColor = #eeeeee;
 color foreColor = #000000;
-float rad;
-//float space = 12.0;
-//float thick = 6.0;
-//float count = 7;
+int lines = 12;
+float weight = 42;
 
 void setup() {
   size(640, 640);
@@ -22,8 +20,6 @@ void setup() {
   back = loadImage("back.png");
   back2 = loadImage("back2.png");
   noStroke();
-  
-  rad = width*0.6;
 }
 
 void draw() {
@@ -32,38 +28,27 @@ void draw() {
     noLoop();
     return;
   }
-  //println(frameCount);
+  println(frameCount);
   
-  background(backColor);
-  pushMatrix();
+  // draw backgrounds
+  image(back, 0, height/2);
+  image(back2, 0, -height/2);
 
+  // draw lines
   translate(width/2, height/2);
-
-  // backdrop circle
-  fill(foreColor);
-  ellipse(0, 0, rad, rad);
-  
-  noFill();
-  stroke(backColor);
-  strokeWeight(12);
-  
-  
-  // ???
-  float r = map(frameCount, 0, fCount, 0, rad);
-  
-  ellipse(0, 0, r, r);
-
-
-  // give it some texture
-  popMatrix();
-  blendMode(LIGHTEST);
-  image(back, 0, 0);
-  blendMode(MULTIPLY);
-  image(back2, 0, 0);
+  translate(-weight*((lines-1)/2.0)+weight/4.0, 0);
+  fill(backColor);
+  blendMode(EXCLUSION);
+  float yOff = map(frameCount, 0, fCount, 0, TWO_PI);
+  for (int i = 0; i < lines; i++) {
+    float y = 200*sin(yOff+map(i,0,lines,0,PI/1.0));
+    rect(-weight/2, -80+y, weight/2, 160-y*2.0); 
+    translate(weight, 0);
+  }
   
 
   // video
-  //saveFrame("output/frame########.png");
+  saveFrame("output/frame########.png");
   // gif
   //if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
 }
