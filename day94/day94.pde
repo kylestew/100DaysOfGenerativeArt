@@ -1,201 +1,106 @@
-/*== DAY 94 == [TUE APR 12 2016] == */
+/*== DAY 96 == [THR APR ?? 2016] == */
 /*
- * "Black Magic"
- * Channeling some interesting symbols out of the machine.
+ * "Please break my heart"
+ * Had the chance to collab with @soulflowcreations on today's post. Artistically speaking, she may be the complete opposite of me. Great experience.  
+ * 
  */
-int fCount = 5*30;
-int fDiv = 4;
+import ddf.minim.*;
+import ddf.minim.analysis.*;
+ 
+int fCount = 1*30;
+int fDiv = 1;
 
-float baseSize;
+Minim       minim;
+AudioPlayer src;
+FFT fft;
+
 PImage back;
-ArrayList<Circle> centers;
+PGraphics mask;
+PGraphics g;
 
-PGraphics canvas;
+float rotation = 0;
 
 void setup() {
-  size(640, 640, P2D);
+  size(650, 650, P3D);
   smooth(8);
-  baseSize = width > height ? height : width;
-
-  canvas = createGraphics(640, 640, P2D);
+  frameRate(15);
+  
   back = loadImage("back.png");
+  noStroke();
+  
+  mask = createGraphics(640, 640, P2D);
+  g = createGraphics(640, 640, P2D);
+  
+  minim = new Minim(this);
+  //src = minim.getLineIn();
+  
+  src = minim.loadFile("loop2.wav", 1024);
+  
+  src.play();
+  
+  fft = new FFT(src.bufferSize(), src.sampleRate());
+  fft.logAverages( 64, 3 );
 }
-
-
-color backColor = #121818;
-float rotation = 180.0;
-int count = 5;
-float radius = 0.1;
-float offset = 0.01;
-int genStart = 0;
-int genEnd = 1;
-float scaleGeneration = 1;
-float offsetGeneration = 0.2;
-float circleWeight = 1;
-color circleColor = #222222;
-float circleOpacity = 0.8;
-color circleFillColor = #ffffff;
-float circleFillOpacity = 0.0;
-float dotWeight = 1;
-color dotColor = #ffffff;
-float dotOpacity = 1;
-float lineWeight = 1.0;
-color lineColor = #222222;
-float lineOpacity = 0.4;
-
-boolean showCenters = true;
-boolean showNetwork = true;
-boolean showIntersects = true;
 
 void draw() {
   if (frameCount > fCount) {
     frameCount = 0;
-    noLoop();
-    return;
+    //noLoop();
+    //return;
   }
-  println(frameCount);
+  //println(frameCount);
   
-  offset = 0.3*cos(map(frameCount, 0, fCount, 0, PI));
-  radius = 0.8*sin(map(frameCount, 0, fCount, 0, PI));
+  fft.forward(src.mix);
   
-  // prepare canvas
-  canvas.beginDraw();
-  canvas.colorMode(RGB, 255, 255, 255, 1);
-  canvas.background(0,0,0,0);
-  canvas.translate(width/2, height/2);
+  background(0);
   
-  // blurred (no gif)
-  //circleWeight *= 2.5;
-  //drawFrame();
-  //canvas.filter(BLUR, 5);
-  //circleWeight /= 2.5;
-  
-  drawFrame();
-  canvas.endDraw();
-  
-  // draw composite
-  image(back, 0, 0);
-  filter(INVERT);
-  background(#eeeeee);
-  image(canvas, 0, 0);
-  
-  
-  
-  
-  // video
-  //saveFrame("output/frame########.png");
-  // gif
-  if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
-}
+  stroke(0);
+  strokeWeight(8);
+  noFill();
+  beginShape();
+  for(int i = 0; i < src.bufferSize() - 1; i++) {
+    vertex(i+60, height/2.0 + src.right.get(i+1)*100);
+  }
+  endShape();
 
-void drawFrame() {
-  canvas.pushMatrix();
-  canvas.rotate(radians(rotation)); // base rotation
-  centers = new ArrayList<Circle>();
-  drawGeneration(0, 0, 0, 1.0);
-  
-  // CENTER / INTERSECTS
-  ArrayList<PVector> points = new ArrayList<PVector>();
+  int steps = 64;
+  rotation = lerp(rotation, 0.0055*(fft.getAvg(3)-110), 0.22);
+  float ang = 0;
+  float angStep = rotation/steps;
+  int i = 0;
+  for (int r = 500; r > 0; r-= 500/steps) {
     
-  if (showCenters) {
-    for (int i = 0; i < centers.size(); i++) {
-      Circle c0 = centers.get(i);
-      points.add(new PVector(c0.x, c0.y));
-    }
-  }
-  if (showIntersects) {
-   for (int i = 0; i < centers.size(); i++) {
-     Circle c0 = centers.get(i);
-     for (int j = 0; j < centers.size(); j++) {
-       if (i == j)
-         continue;
-       Circle c1 = centers.get(j);
-        
-       PVector[] pts = c0.circleIntersection(c1);
-        
-       // de-duplicate points
-       for (int pI = 0; pts != null && pI < pts.length; pI++) {
-        PVector p = pts[pI];
-        boolean found = false;
-        for (int a = 0; a < points.size(); a++) {
-          PVector p1 = points.get(a);
-          if (p1.x == p.x && p1.y == p.y) {
-            found = true;
-            break;
-          }
-        }
-        if (found == false) {
-          points.add(p);
-        }
-       }
-     }
-   }
-  }
-  
-  // draw lines
-  if (showNetwork) {
-   // for each point, draw a line to all other points 
-   setStroke(lineColor, lineOpacity, lineWeight);
-   for (int i = 0; i < points.size(); i++) {
-    PVector p = points.get(i);
-    // start past myself
-    for (int j = i+1; j < points.size(); j++) {
-      PVector p1 = points.get(j);
-      canvas.line(p.x, p.y, p1.x, p1.y);
-    }
-   }
-  }
-  
-  // draw points
-  setStroke(dotColor, dotOpacity, dotWeight);
-  for (int i = 0; i < points.size(); i++) {
-    PVector p = points.get(i);
-    canvas.point(p.x, p.y);
-  }
-  
-  canvas.popMatrix();
-}
-
-void drawGeneration(int generation, float centerX, float centerY, float scale) {
-  for (int i = 0; i < count; i++) {
-    // determine rotation
-    float rot = radians(i*360.0/count);
+    pushMatrix();
+    translate(width/2.0, height/2.0);
+    rotate(i % 2 == 0 ? ang : -ang);
+    translate(-width/2.0, -height/2.0);
+    drawWithRad(r);
+    popMatrix();
     
-    // determine offset from center
-    float off = baseSize * offset;
-    off *= offsetGeneration * (generation + 1);
-    
-    // determine center
-    float cX = centerX + off*sin(rot);
-    float cY = centerY + off*cos(rot);
-    
-    // determine radius of circle - based on generational scaling
-    float rad = baseSize * radius * scale;
-    
-    // hide culled generations
-    if (generation >= genStart) {
-      // log shape details connections
-      centers.add(new Circle(cX, cY, rad/2.0));
-      
-      // draw
-      setStroke(circleColor, circleOpacity, circleWeight);
-      setFill(circleFillColor, circleFillOpacity);
-      canvas.ellipse(cX, cY, rad, rad);
-    }
-    
-   // draw generation from this shape
-    if (generation < genEnd - 1) {
-      drawGeneration(generation + 1, cX, cY, scale * scaleGeneration);
-    }
+    ang += angStep;
+    //i++;
   }
 }
 
-void setStroke(color col, float opacity, float weight) {
-  canvas.stroke(red(col), green(col), blue(col), opacity);
-  canvas.strokeWeight(weight);
-  canvas.noFill();
+void drawWithRad(float rad) {
+  prepareMask(rad);
+  g.beginDraw();
+  g.background(0,0,0,0);
+  g.image(back, 0, 0);
+  g.mask(mask);
+  g.endDraw();
+  image(g, 0, 0);
 }
 
-void setFill(color col, float opacity) {
-  canvas.fill(red(col), green(col), blue(col), opacity);
+void prepareMask(float rad) {
+  mask.beginDraw();
+  
+  mask.background(0,0,0,0);
+  
+  mask.translate(width/2.0, height/2.0);
+  mask.noStroke();
+  mask.fill(255);
+  mask.ellipse(0, 0, rad, rad);
+ 
+  mask.endDraw();
 }

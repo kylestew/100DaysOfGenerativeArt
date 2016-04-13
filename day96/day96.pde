@@ -1,92 +1,82 @@
-/*== DAY 96 == [THR APR ?? 2016] == */
+/*== DAY 96 == [THR APR 14 2016] == */
 /*
- * "..."
- * ...
+ * "Dyson Planet"
+ * 12k walkers doing their random thing on a Dyson ring. 
+ * Inspired by @echophon
+ * http://echophon.tumblr.com/
  */
-int fCount = 4*30;
+int fCount = 12*30;
 int fDiv = 1;
 
-PImage back;
-PGraphics mask;
-PGraphics g;
+PImage stars;
 
-int steps = 8;
+int count = 12000;
+Walker[] walkers = new Walker[count];
+float circRad;
 
 void setup() {
-  size(640, 640, P3D);
+  size(1200, 960, P2D);
   smooth(8);
-  frameRate(30);
   
-  back = loadImage("back.png");
-  noStroke();
+  circRad = height*0.2;
   
-  mask = createGraphics(640, 640, P2D);
-  g = createGraphics(640, 640, P2D);
+  // setup walkers
+  for (int i = 0; i < count; i++) {
+    float ang = map(i, 0, count, 0, TWO_PI);
+    float x = circRad*sin(ang);
+    float y = circRad*cos(ang);
+    walkers[i] = new Walker(new PVector(x, y), new PVector(sin(ang), cos(ang)), ang);
+  }
+  
+  stars = loadImage("stars.jpg");
+  image(stars,0,0);
+  
+  colorMode(HSB, TWO_PI, 100, 100, 100);
+  noFill();
+  
+
+  // dail in noise pattern
+  //noiseSeed(22);
+  //noiseDetail(8, 0.8);
 }
 
 void draw() {
-  if (frameCount > fCount) {
-    frameCount = 0;
-    noLoop();
-    return;
-  }
-  println(frameCount);
-  
-  background(0);
 
-  int steps = 24;
-  float angStep = 4*sin(map(frameCount, 0, fCount, 0, TWO_PI)) / steps;
-  float ang = 0;
-  int i = 0;
-  for (int r = 550; r > 0; r-= 550/steps) {
-    translate(width/2.0, height/2.0);
-    rotate(i % 2 == 0 ? ang : -ang);
-    translate(-width/2.0, -height/2.0);
-    drawWithRad(r);
-    
-    ang += angStep;
-    i++;
+  translate(width/2, height/2);
+  for (int i = 0; i < count; i++) {
+    walkers[i].update();
+    walkers[i].draw();
   }
-  
-  //translate(width/2.0, height/2.0);
-  //rotate(frameCount/12.0);
-  //translate(-width/2.0, -height/2.0);
-  //drawStep(100, 200);
-  
 
-  //float maxRad = 300;
-  //float step = 300/(float)steps;
-  //for (float rad = maxRad; rad > 0; rad -= step) {
-    
-    
-    
-  //}
-  
   // video
   saveFrame("output/frame########.png");
-  // gif
-  //if (frameCount % fDiv == 0) saveFrame("output/frame####.gif");
 }
 
-void drawWithRad(float rad) {
-  prepareMask(rad);
-  g.beginDraw();
-  g.background(0,0,0,0);
-  g.image(back, 0, 0);
-  g.mask(mask);
-  g.endDraw();
-  image(g, 0, 0);
-}
-
-void prepareMask(float rad) {
-  mask.beginDraw();
+class Walker {
+  PVector loc;
+  PVector vel;
+  float hue;
   
-  mask.background(0,0,0,0);
+  public Walker(PVector loc, PVector vel, float hue) {
+    this.loc = loc;
+    this.vel = vel;
+    this.hue = hue;
+  }
   
-  mask.translate(width/2.0, height/2.0);
-  mask.noStroke();
-  mask.fill(255);
-  mask.ellipse(0, 0, rad, rad);
- 
-  mask.endDraw();
+  public void update() {
+    loc.x += vel.x;
+    loc.y += vel.y;
+    
+    vel.x = lerp(vel.x, 45*(noise(loc.x, loc.y)-0.465), 0.06);
+    vel.y = lerp(vel.y, 45*(noise(loc.y, loc.x)-0.465), 0.04);
+  }
+  
+  public void draw() {
+    strokeWeight(0.6);
+    stroke(hue, 100, 100, 80);
+    
+    float rad = abs(dist(0,0,loc.x,loc.y));
+    if (abs(circRad-rad) > 9)
+      point(loc.x, loc.y);
+  }
 }
