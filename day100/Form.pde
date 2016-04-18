@@ -13,7 +13,7 @@ class Form {
   // == generations ==
   public int genStart = 0;
   public int genEnd = 2;
-  public boolean[] trackCenters = { false, false, true };
+  public boolean[] trackCenters;
   public boolean directedGen = true;
   public float scaleGeneration = 1.0;
   public float offsetGeneration = 1;
@@ -92,16 +92,6 @@ class Form {
     // draw generations
     drawGeneration(0, 1.0, radians(baseRotation), new PVector());
 
-    // draw centers
-    g.noStroke();
-    setFill(centerStrokeColor, centerStrokeOpacity);
-    if (showCenters) {
-      for (int i = 0; i < centers.size(); i++) {
-        PVector p = centers.get(i);
-        g.ellipse(p.x, p.y, centerStrokeWeight, centerStrokeWeight);
-      }
-    }
-    
     // draw network lines
     if (showNetwork) {
       // for each point, draw a line to all other points
@@ -115,6 +105,16 @@ class Form {
         }
       }
     }
+    
+    // draw centers
+    g.noStroke();
+    setFill(centerStrokeColor, centerStrokeOpacity);
+    if (showCenters) {
+      for (int i = 0; i < centers.size(); i++) {
+        PVector p = centers.get(i);
+        g.ellipse(p.x, p.y, centerStrokeWeight, centerStrokeWeight);
+      }
+    }
   }
 
   private void drawGeneration(int generation, float scale, float rot0, PVector cent) {
@@ -122,7 +122,7 @@ class Form {
     float rad = baseSize * shapeRadius * scale;
 
     // hide culled generations
-    if (generation >= genStart) {
+    if (generation >= genStart && showShapes) {
       // draw
       setStroke(shapeColor, shapeOpacity, shapeWeight);
       setFill(shapeFillColor, shapeFillOpacity);
@@ -135,7 +135,9 @@ class Form {
     }
     
     // record shape center
-    if (trackCenters[generation] == true)
+    if (trackCenters == null)
+      centers.add(cent);
+    else if (trackCenters[generation] == true)
       centers.add(cent);
     
     // draw generation from this shape
@@ -183,7 +185,7 @@ class Form {
 
   private void setStroke(color col, float opacity, float weight) {
     g.stroke(red(col), green(col), blue(col), opacity);
-    g.strokeWeight(weight);
+    g.strokeWeight(weight > 0 ? weight : 0);
     g.noFill();
   }
   

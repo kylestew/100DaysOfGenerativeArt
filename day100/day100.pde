@@ -1,33 +1,35 @@
 /*== DAY 100 == [MON APR 18 2016] == */
 /*
- * "Final Days" [3 part post]
- * This is the end, my friends.
+ * "End of the Universe" [3 part post]
+ * I've learned a lot creating #100DaysOfGenerativeArt. Now I'm looking forward to focusing deeper on each theme. 100 days gave me the chance to try out many ideas. Now I have the time to go deep on the best ones. Stay tuned for more!
  */
- 
-/*
-Ideas:
-+ Animate parameters
-+ Hi-res output
-+ Hi-volume output
-*/
-int fCount = 6*30-12;
+int fCount = 5*30;
 int fDiv = 6;
 
 Forms forms;
 
 void setup() {
-  size(1600, 1600, P2D);
+  size(640, 640, P2D);
   smooth(8);
   colorMode(RGB, 255, 255, 255, 1);
-  noLoop();
 
   // pick forms
-  forms = new F1();
+  //forms = new FlowerOfLife();
+  //forms = new MetatronsCube();
+  //forms = new Multisided();
 }
 
 void draw() {
-  forms.update();
+  if (frameCount > fCount) {
+    frameCount = 0;
+    noLoop();
+    return;
+  }
+  println(frameCount);
+  
+  forms.update(map(frameCount, 0, fCount, 0, 1));
   forms.draw();
+  
   saveFrame("output/frame########.png");
 }
 
